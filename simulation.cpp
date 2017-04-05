@@ -1,10 +1,3 @@
-//
-//  simulation.cpp
-//  simulationFoSFC
-//
-//  Created by Vivian1010 on 17/4/1.
-//  Copyright © 2017年 Vivian1010. All rights reserved.
-//
 
 
 
