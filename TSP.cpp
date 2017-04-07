@@ -48,18 +48,18 @@ int get_lb(Node p)
 	for (int i = 1; i <= n; i++)
 	{
 		//cout << p.visited[i] << endl;
-		if (!p.visited[i] && min1 > cost[i][p.s])
+		if (!p.visited[i] && min1 > cost[i][p.path[n] ])
 		{
-			min1 = cost[i][p.s];
+			min1 = cost[i][p.path[n]];
 		}
 		//cout << min1 << endl;
 	}
 	ret += min1;
 	for (int i = 1; i <= n; i++)
 	{
-		if (!p.visited[i] && min2 > cost[p.e][i])
+		if (!p.visited[i] && min2 > cost[p.path[n]][i])
 		{
-			min2 = cost[p.e][i];
+			min2 = cost[p.path[n]][i];
 		}
 		//cout << min2 << endl;
 	}
@@ -85,17 +85,19 @@ int get_lb(Node p)
 	return (ret + 1) / 2;
 }
  
-int solve()
+int * calculateOrder(vector<vector<int>> cost)
 {
 	//贪心法确定上界
 	get_up();
 	//取每行最小的边之和作为下界
-
+	//cout << up << endl;//test
 	get_low();
+	//cout << low << endl;//test
 	//设置初始点,默认从1开始
 	Node star;
-	star.s = 1;//起点为1
-	star.e = 1;//终点为1
+	memset(star.path, -1, sizeof(star.path));
+	star.path[1] = 1;//起点为1
+	star.path[n] = 1;//终点为1
 	star.k = 1;//走过了1个点
 	for (int i = 1; i <= n; i++)
 	{
@@ -106,28 +108,34 @@ int solve()
 	star.lb = low;//让目标值先等于下界	
 	int ret = INF;//ret为问题的解
 	pq.push(star);//将起点加入队列
-
 	while (pq.size())
 	{
+		
 		Node tmp = pq.top();pq.pop();
+	    tmp.path[tmp.k]=tmp.path[n];
 		if (tmp.k == n - 1)//如果已经走过了n-1个点
 		{
 			//找最后一个没有走的点
 			int p;
-			for (int i = 1; i <= n; i++)
+			for (int i = 1; i <= n; i++) 
 			{
 				if (!tmp.visited[i])
 				{
 					p = i;//让没有走的那个点为最后点能走的点
+					
 					break;
 				}
 			}
-
-			int ans = tmp.sumv + cost[p][tmp.s] + cost[tmp.e][p];//已消耗+回到开始消耗+走到P的消耗
+			int ans = tmp.sumv + cost[p][tmp.path[1]] + cost[tmp.path[n]][p];//已消耗+回到开始消耗+走到P的消耗
 			//如果当前的路径和比所有的目标函数值都小则跳出
 			if (ans <= tmp.lb)
 			{
 				ret = min(ans, ret);
+				tmp.path[n]=p; //更新最后走的节点
+				for(int i = 1;i<=n;i++){
+				//cout<<tmp.path[i]<<" ";
+					return tmp.path;
+				}
 				break;
 			}
 			//否则继续求其他可能的路径和，并更新上界
@@ -138,35 +146,31 @@ int solve()
 				continue;
 			}
 		}
-		//当前点可以向下扩展的点入优先级队列
+		//当前点可以向下扩展的点入优先级队列,将下一级的节点如队列
 		Node next;
 		for (int i = 1; i <= n; i++)
 		{
 			if (!tmp.visited[i])
 			{
 				//cout << "test" << endl;
-				next.s = tmp.s;//沿着tmp走到next，起点不变			
-				next.sumv = tmp.sumv + cost[tmp.e][i];//更新路径和				
-				next.e = i;//更新最后一个点				
-				next.k = tmp.k + 1;//更新走过的顶点数				
+				next.k = tmp.k + 1;//更新走过的顶点数			
+				next.sumv = tmp.sumv + cost[tmp.path[n]][i];//更新路径和								
+				
 				for (int j = 1; j <= n; j++) next.visited[j] = tmp.visited[j];//tmp经过的点也是next经过的点
+				for (int j = 1; j <= n; j++) next.path[j] = tmp.path[j]; //更新next 的路径
+				next.path[n] = i;//更新最后一个点	
+
 				next.visited[i] = true;//自然也要更新当前点
-				//cout << next.visited[i] << endl;
+			
 				next.lb = get_lb(next);//求目标函数
 				//cout << next.lb << endl;
 				if (next.lb > up) continue;//如果大于上界就不加入队列
 				pq.push(next);//否则加入队列
+				//cout<<next.e<<" ";
 				//cout << "test" << endl;
 			}
 		}
 		//cout << pq.size() << endl;BUG:测试为0
 	}
-	return ret;
-}
-int calculateOrder(vector<vector<int>> cost)
-{   
-   	int res;
-	res = solve();
 	
-	return 0;
 }
