@@ -22,6 +22,8 @@ const int MAXINUM = 8;				//拓扑节点数 先建立8个节点的树状拓扑
 const int SERVERNUMBER = 4;			//数据中心数（宿节点）
 const int WaveNumber = 10;			//链路波长总数
 const int ServiceQuantity = 10000;	//业务总数
+const  int source = 10000;           //源节点
+const  int destination = 10001;      //目的节点
 
 const int M = 8 ;                  //vnf 类型数量
 static int rf[M];                   //vnf 所需的计算资源,范围为[1，10]
@@ -81,7 +83,7 @@ void dealWithEvent(Event& event);
 int showPath(Event& event);
 void pathCalculate(const int v);
 
-void orderOfVNF(vector<int>& tmpt_vnfOrder);
+vector<int> orderOfVNF(vector<int>& tmpt_vnfOrder);
 int m_min(int a ,int b);
 
 void generateServiceEventPair(const int id);
