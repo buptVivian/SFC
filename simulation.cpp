@@ -1,5 +1,4 @@
-    
-    #include "simulation.h"
+#include "simulation.h"
 #include "TSP.h"
 #include "set"
 #include<vector>
@@ -261,7 +260,7 @@ void dealWithEvent(Event& event)  //事件处理函数流程决定了事件按�
 		   for (int i = 0;i<M;i++)
 		   { if(event.c_M[i]== 1) tmpt_vnfOrder.push_back(i);
 		   }
-		  
+		   event.vnfOrder = orderOfVNF(tmpt_vnfOrder); //计算从源节点到目的节点vnf顺序
 
 			
             if (reg_wave == -1)
@@ -311,7 +310,7 @@ void dealWithEvent(Event& event)  //事件处理函数流程决定了事件按�
     }
 }
 
-void orderOfVNF(vector<int>& tmpt_vnfOrder) //计算vnf 顺序
+vector<int> orderOfVNF(vector<int>& tmpt_vnfOrder) //计算vnf 顺序
 {      n=tmpt_vnfOrder.size+1 ;
         for (int i = 0;i<n;i++)
 	     {   for(int j=0;j<n;j++){
@@ -320,8 +319,15 @@ void orderOfVNF(vector<int>& tmpt_vnfOrder) //计算vnf 顺序
 			     else if (j == 1) cost[i][j] = rf[tmpt_vnfOrder[i-1]]; //从vnf回到s的费用等同于回到d的费用等同于vnf的计算资源需求
 			      else cost[i][j] = m_min(rf[tmpt_vnfOrder[i-1]],rf[tmpt_vnfOrder[j-1]]);
 	          }
-	      }
-		calculateOrder(cost);
+	      } 
+		int *m_vnfPath = calculateOrder(cost);
+		vector<int> m_vnfOrder;
+		m_vnfOrder[0]=source; //加入源节点
+		for (int i=2;i<=n;i++){      //加入其余节点
+			m_vnfOrder.push_back(tmpt_vnfOrder[m_vnfPath[i]-2]);
+		}
+		m_vnfOrder.push_back(destination); //加入目的节点
+  return m_vnfOrder;
 
 }
 //计算路径，并返回可用波长编号
