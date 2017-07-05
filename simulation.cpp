@@ -1,83 +1,36 @@
-#include "simulation.h"
-#include "TSP.h"
+
+#include "simulation.hpp"
+#include "TSP.hpp"
 #include "set"
 #include<vector>
 
-//读取拓扑文件
-void readUSAEdgeMap()
-{
-    
-    g_edge[0][0]=0;g_edge[0][1]=1;g_edge[0][2]=1;g_edge[0][3]=1;g_edge[0][4]=999;g_edge[0][5]=999;g_edge[0][6]=999;g_edge[0][7]=999;
-    g_edge[0][8]=999;g_edge[0][9]=999;g_edge[0][10]=999;g_edge[0][11]=999;g_edge[0][12]=999;g_edge[0][13]=999;
-    
-    g_edge[1][0]=1;g_edge[1][1]=0;g_edge[1][2]=1;g_edge[1][3]=999;g_edge[1][4]=999;g_edge[1][5]=999;g_edge[1][6]=999;g_edge[1][7]=1;
-    g_edge[1][8]=999;g_edge[1][9]=999;g_edge[1][10]=999;g_edge[1][11]=999;g_edge[1][12]=999;g_edge[1][13]=999;
-    
-    g_edge[2][0]=1;g_edge[2][1]=1;g_edge[2][2]=0;g_edge[2][3]=999;g_edge[2][4]=999;g_edge[2][5]=1;g_edge[2][6]=999;g_edge[2][7]=999;
-    g_edge[2][8]=999;g_edge[2][9]=999;g_edge[2][10]=999;g_edge[2][11]=999;g_edge[2][12]=999;g_edge[2][13]=999;
-    
-    g_edge[3][0]=1;g_edge[3][1]=999;g_edge[3][2]=999;g_edge[3][3]=0;g_edge[3][4]=1;g_edge[3][5]=999;g_edge[3][6]=1;g_edge[3][7]=999;
-    g_edge[3][8]=999;g_edge[3][9]=999;g_edge[3][10]=999;g_edge[3][11]=999;g_edge[3][12]=999;g_edge[3][13]=999;
-    
-    g_edge[4][0]=999;g_edge[4][1]=999;g_edge[4][2]=999;g_edge[4][3]=1;g_edge[4][4]=0;g_edge[4][5]=1;g_edge[4][6]=999;g_edge[4][7]=999;
-    g_edge[4][8]=1;g_edge[4][9]=999;g_edge[4][10]=999;g_edge[4][11]=999;g_edge[4][12]=999;g_edge[4][13]=999;
-    
-    g_edge[5][0]=999;g_edge[5][1]=999;g_edge[5][2]=1;g_edge[5][3]=999;g_edge[5][4]=1;g_edge[5][5]=0;g_edge[5][6]=999;g_edge[5][7]=999;
-    g_edge[5][8]=999;g_edge[5][9]=1;g_edge[5][10]=999;g_edge[5][11]=1;g_edge[5][12]=999;g_edge[5][13]=999;
-    
-    g_edge[6][0]=999;g_edge[6][1]=999;g_edge[6][2]=999;g_edge[6][3]=1;g_edge[6][4]=999;g_edge[6][5]=999;g_edge[6][6]=0;g_edge[6][7]=999;
-    g_edge[6][8]=999;g_edge[6][9]=999;g_edge[6][10]=999;g_edge[6][11]=999;g_edge[6][12]=1;g_edge[6][13]=1;
-    
-    g_edge[7][0]=999;g_edge[7][1]=1;g_edge[7][2]=999;g_edge[7][3]=999;g_edge[7][4]=999;g_edge[7][5]=999;g_edge[7][6]=999;g_edge[7][7]=0;
-    g_edge[7][8]=1;g_edge[7][9]=999;g_edge[7][10]=1;g_edge[7][11]=999;g_edge[7][12]=999;g_edge[7][13]=999;
-    
-    g_edge[8][0]=999;g_edge[8][1]=999;g_edge[8][2]=999;g_edge[8][3]=999;g_edge[8][4]=1;g_edge[8][5]=999;g_edge[8][6]=999;g_edge[8][7]=1;
-    g_edge[8][8]=0;g_edge[8][9]=999;g_edge[8][10]=999;g_edge[8][11]=999;g_edge[8][12]=999;g_edge[8][13]=999;
-    
-    g_edge[9][0]=999;g_edge[9][1]=999;g_edge[9][2]=999;g_edge[9][3]=999;g_edge[9][4]=999;g_edge[9][5]=1;g_edge[9][6]=999;g_edge[9][7]=999;
-    g_edge[9][8]=999;g_edge[9][9]=0;g_edge[9][10]=1;g_edge[9][11]=999;g_edge[9][12]=999;g_edge[9][13]=999;
-    
-    g_edge[10][0]=999;g_edge[10][1]=999;g_edge[10][2]=999;g_edge[10][3]=999;g_edge[10][4]=999;g_edge[10][5]=999;g_edge[10][6]=999;g_edge[10][7]=1;
-    g_edge[10][8]=999;g_edge[10][9]=1;g_edge[10][10]=0;g_edge[10][11]=999;g_edge[10][12]=1;g_edge[10][13]=1;
-    
-    g_edge[11][0]=999;g_edge[11][1]=999;g_edge[11][2]=999;g_edge[11][3]=999;g_edge[11][4]=999;g_edge[11][5]=1;g_edge[11][6]=999;g_edge[11][7]=999;
-    g_edge[11][8]=999;g_edge[11][9]=999;g_edge[11][10]=999;g_edge[11][11]=0;g_edge[11][12]=1;g_edge[11][13]=1;
-    
-    g_edge[12][0]=999;g_edge[12][1]=999;g_edge[12][2]=999;g_edge[12][3]=999;g_edge[12][4]=999;g_edge[12][5]=999;g_edge[12][6]=1;g_edge[12][7]=999;
-    g_edge[12][8]=999;g_edge[12][9]=999;g_edge[12][10]=1;g_edge[12][11]=1;g_edge[12][12]=0;g_edge[12][13]=999;
-    
-    g_edge[13][0]=999;g_edge[13][1]=999;g_edge[13][2]=999;g_edge[13][3]=999;g_edge[13][4]=999;g_edge[13][5]=999;g_edge[13][6]=1;g_edge[13][7]=999;
-    g_edge[13][8]=999;g_edge[13][9]=999;g_edge[13][10]=1;g_edge[13][11]=1;g_edge[13][12]=999;g_edge[13][13]=0;
-}
 
-void readFatTreeGraph(){
-    
-}
-//初始化
+
 void initialize(const double g_lamda)
 {
     m_lamda = g_lamda;	//业务到达率
     m_rou = g_rou;
     m_currentTime = 0;
     
-    
-    for (int i = 0; i < MAXINUM; i++){         //给拓扑中所有相连路劲分配全波长
-        for (int j = 0; j < MAXINUM; j++){
-            for (int k = 0; k < WaveNumber; k++){
-                if (g_edge[i][j] < INFINITE - 1 && g_edge[i][j] != 0){
-                    m_resourceMap[i][j][k] = true;		//所有链路的所有波长均可用
-                }
+    for(int i = 0; i<k; i++){   //所有端口都可用
+        for(int j = 0;j<k; j++)
+          pod_port[i][j]=true;
+    }
+    for (int i = 0; i < k; i++){         //给拓扑中所有相连路径分配全波长
+        for (int j = 0; j <k; j++){
+            for (int m = 0; m < WaveNumber; m++){
+                pod_slot[i][j][m] = 0 ;		//所有pod的端口的所有波长均可用
             }
         }
     }
-    //初始vnf计算资源消耗
-    //srand(1);
+    //初始vnf计算资源消耗,初始rf{1,10}
     srand((unsigned)time(0));
     for (int i = 0;i<M;i++)
     {  rf[i]=rand()%10+1;
     }
     
 }
+
 
 //仿真处理函数
 void run(ofstream& ofile)
@@ -93,10 +46,10 @@ void run(ofstream& ofile)
     
     while (!m_pq.empty())
     {
-        dealWithEvent( (Event&) *m_pq.begin() );		//按照优先因子处理优先级队列事件
+        dealWithEvent();		//按照优先因子处理优先级队列事件
     }
     
-    ofile << (double)m_sumOfFailedService / ServiceQuantity;
+    ofile << (double)m_sumOfFailedService ;
     ofile << '\n';
     
     cout << "the failure rate is:" << '\t' << (double)m_sumOfFailedService / ServiceQuantity << endl;
@@ -113,41 +66,45 @@ void generateServiceEventPair(const int id)
     event0.m_holdTime = arrive_time_hol(m_rou);
     
     Pair node = randomSrcDst();  // 获取源节点和目的节点
-    event0.m_sourceNode = node.first;
-    event0.m_destNode = node.second;
+    event0.m_sourceNode = node.first+1000; 
+    event0.m_destNode = node.second+1000;
     event0.c_M = randvnf();  //获取vnf类型
     
-    m_pq.insert(event0);
+    m_pq.push(event0);
 }
 
-//随机生成源宿节点(不能相同且宿节点为数据中心0,4,8,12)
+//随机生成源宿节点(暂时为不同)
 Pair randomSrcDst()
 {
     Pair SrcDst;
-    
-    do
-    {
-        SrcDst.first = genrandom(0, MAXINUM - 1);
-        SrcDst.second = genrandom(0, MAXINUM - 1);
-    } while (SrcDst.first == SrcDst.second);
+    set<int>* tmp = new set<int>;
+    while(tmp->size() < 2){
+        tmp->insert(rand() % k );
+    }
+    set<int>::iterator itr;
+    itr=tmp->begin();
+    SrcDst.first= *itr;
+    itr++;
+    SrcDst.second=*itr;
     return SrcDst;
 }
 
+//返回c_M确定使用的vnf
 int* randvnf(){
-    int numberOfVnf;
-    numberOfVnf=genrandom(2,M);
+    //srand((unsigned)time(NULL));
+    int numberOfVnf=genrandom(2,M);//该业务包含的vnf个数
     int* vnf = new int[M];
     for (int j=0;j<M;j++){
         vnf[j]=-1;
     }
-    srand((unsigned)time(NULL));
+    //随机生成vnf类型,{0,M-1}
     set<int>* tmp = new set<int>;
     while(tmp->size() < numberOfVnf){
         tmp->insert(rand() % M );
     }
     
     set<int>::iterator itr;
-    int*  tmpt= new int[numberOfVnf];
+    int* tmpt= new int[numberOfVnf];
     
     int i = 0;
     for(itr=tmp->begin();itr !=tmp->end();itr++)
@@ -158,51 +115,314 @@ int* randvnf(){
     for (int i = 0;i<numberOfVnf;i++){
         vnf[tmpt[i]]=1;
     }
-    return vnf;}
+    delete[] tmpt;
+    return vnf;
+}
 
-//D算法
-void pathCalculate(const int v)
+//生成业务离去事件
+Event generateLeavingevent(const Event& event)
 {
-    int m_shortestPoint[MAXINUM][MAXINUM];  //标记与v发生联系的节点
-    for (int i = 0; i < MAXINUM; i++)
+    Event event1 = event;
+    event1.m_eventType = End;
+    event1.m_time = event.m_time + event.m_holdTime;	//"业务离去事件的发生时间" = "业务到达事件发生的时间" + "业务持续时间"
+    
+    return event1;
+}
+
+//事件处理函数
+void dealWithEvent()  //事件处理函数流程决定了事件按照一个业务到达处理完毕再处理另一个业务的过程
+{   Event event=m_pq.top();
+    m_pq.pop();
+    
+    m_currentTime = event.m_time;
+    switch (event.m_eventType)
     {
-        m_dist[v][i] = g_edge[v][i];
-        m_shortestPoint[v][i] = 0;
-        if (i != v && m_dist[v][i] < INFINITE - 1)
+            //业务到达事件
+        case Arrival:
         {
-            m_path[v][i] = v;
+            cout<<event.m_id<<"arr"<<endl;  //test
+            int flagForService= 1; //判断服务是否成功的标志，若不成功则不需要改变原有资源状态
+            vector<int> tmpt_vnfOrder;
+            
+            //先排序再映射
+            for (int i = 0;i< M;i++)
+                if(event.c_M[i]== 1) tmpt_vnfOrder.push_back(i);
+            orderOfVNF(tmpt_vnfOrder,event); //计算从原节点到目的节点的顺序
+            
+            event.x = mapNode(event);  //map vnf到pod 节点上 event.x 长度为M+2
+            if (event.x[0]== -1)
+            {m_sumOfFailedService++;//业务阻塞，统计阻塞率
+                flagForService =0;
+                }
+            else{
+                //生成vnf所占pod节点路由
+                event.m_podPath.push_back(event.m_sourceNode);
+                event.m_podPath.push_back(event.x[event.vnfOrder[1]+1]);
+                for(int i = 2;i<event.vnfOrder.size()-1;i++){
+                    if(event.x[event.vnfOrder[i]+1] != event.x[event.vnfOrder[i-1]+1])
+                        event.m_podPath.push_back(event.x[event.vnfOrder[i]+1]);
+                   }
+                event.m_podPath.push_back(event.m_destNode);
+                
+                //生成pod节点路由所需的波长
+                event.m_wave.push_back(2);
+                int flag = event.x[event.vnfOrder[1]+1];
+                for(int i = 2;i<event.vnfOrder.size()-1;i++){
+                    if(event.x[event.vnfOrder[i]+1] != flag)    //只分配不同pod节点间频带
+                    {   flag = event.x[event.vnfOrder[i]+1];    //更新标志位
+                        event.m_wave.push_back(min(rf[event.vnfOrder[i]],rf[event.vnfOrder[i-1]]));
+                    }
+                }
+                event.m_wave.push_back(rf[event.vnfOrder[event.vnfOrder.size()-2]]);
+                
+                //分配链路资源
+                bool tmpt_resourceMap[PodNumber][PodNumber][WaveNumber];
+                for(int i=0;i<PodNumber;i++)
+                    for(int j=0;j<PodNumber;j++)
+                        for(int m=0;m<WaveNumber;m++)
+                            tmpt_resourceMap[i][j][k]=m_resourceMap[i][j][m];
+                
+                /*cout<<event.m_id<<endl;
+                for(int i=0;i<event.m_podPath.size();i++)
+                    cout<<event.m_podPath[i]<<" ";
+                cout<<endl;*/
+                for(int i = 0;i<event.m_podPath.size()-1;i++)
+                {
+                    vector<int> path = showPath(event.m_podPath[i],event.m_podPath[i+1]); //计算路径
+                    if(path[0] == -1) {
+                        m_sumOfFailedService++;
+                        flagForService=0;
+                        break;
+                    }
+                    else{
+                        //计算使用的波长序列
+                        int reg_wave = calculate_wave_index(path,event.m_wave[i]);
+                        if (reg_wave == -1)
+                            //业务阻塞，统计阻塞率
+                        { m_sumOfFailedService++;
+                            flagForService=0;
+                            break;}
+                        else{
+                            event.m_ocuppiedwave.push_back(reg_wave);     //添加占用的波长序列号
+                            event.m_path.push_back(path);                 //添加路径
+                            
+                            //标记链路属性为不可用
+                            for(int j=reg_wave;j<reg_wave+event.m_wave[i];j++)
+                                for (vector<int>::iterator it = path.begin(); it != path.end()-1; it++)
+                                {
+                                    tmpt_resourceMap[*it][*(it + 1)][j] = false;
+                                }
+                            }
+                         }
+                 }
+            
+            if(flagForService==1){
+            //链路资源满足事件要求，更新m_resourcemap
+                for(int i=0;i<PodNumber;i++)
+                    for(int j=0;j<PodNumber;j++)
+                        for(int m=0;m<WaveNumber;m++)
+                            m_resourceMap[i][j][m]=tmpt_resourceMap[i][j][m];
+            //更新slot信息
+            for(int i=0;i<event.m_path.size();i++)
+                sumOfusedSlot=sumOfusedSlot+int(event.m_path[i].size()-1)*event.m_wave[i];
+            //更新pod信息
+            sumOfusedPods = sumOfusedPods+int(event.m_podPath.size())-2;
+            //生成该业务的离去事件
+            m_pq.push(generateLeavingevent(event));
+            }else break;
+            }
+            //生成新的业务
+            if (m_nextServiceId < ServiceQuantity)
+            {
+                generateServiceEventPair(m_nextServiceId);
+                m_nextServiceId++;
+            }
+            break;
         }
-        else
-        {
-            m_path[v][i] = -1;
+        //业务离去事件
+        case End:
+        {   cout<<event.m_id<<"end"<<endl;
+            //标记链路属性为可
+            for(int m=0;m<event.m_path.size();m++){
+                for(int j=event.m_ocuppiedwave[m];j<event.m_ocuppiedwave[m]+event.m_wave[m];j++)
+                    for (vector<int>::iterator it = event.m_path[m].begin(); it != event.m_path[m].end()-1; it++)
+                        m_resourceMap[*it][*(it + 1)][j] = true;
+                
+            }
+        }//caseEnd
+    }//switch
+
+}
+
+
+void orderOfVNF(vector<int> tmpt_vnfOrder,Event & event) //计算vnf顺序
+{
+    int n= int(tmpt_vnfOrder.size()+1) ; //将源节点也加入到TSP
+        
+    int * m_vnfPath = NULL;
+    m_vnfPath = calculateOrder(rf,n,tmpt_vnfOrder);  //m_vnfPath长度在tsp算法设置，第0位为标志位，第1位是pod节点
+    
+    for(int i = 0;i <= n;i++)  //TEST
+     cout<< m_vnfPath[i] << " ";
+    cout<<endl;
+    
+    //求解顺序失败，采用随机顺序
+    event.vnfOrder.push_back(event.m_sourceNode); //加入源节点
+    if(m_vnfPath[0]==-1){
+        set<int>* tmp = new set<int>;
+    
+        cout<< "I am IN !!"<< endl; //test
+        
+        while(tmp->size() < n-1){
+            tmp->insert(rand() % (n-1));
+        }
+        
+        set<int>::iterator itr;
+        
+        for(itr=tmp->begin();itr !=tmp->end();itr++)
+            event.vnfOrder.push_back(tmpt_vnfOrder[*itr]);
+        
+        event.vnfOrder.push_back(event.m_destNode);//加入目的节点
+    }
+    else                            //按照tsp 处理的结果将pod节点添加
+    {for (int i=2;i<=n;i++)      //加入其余节点
+      event.vnfOrder.push_back(tmpt_vnfOrder[m_vnfPath[i]-2]);
+        event.vnfOrder.push_back(event.m_destNode);//加入目的节点
+    }
+    /*for(int i=0;i<n+1;i++)
+        cout<<event.vnfOrder[i]<<" ";
+    cout<<endl;*/
+    //return m_vnfOrder;
+   }
+
+//map 节点
+int * mapNode(Event& event){
+    int tmpt_rp[k];   //避免请求失败产生的对rp的修改
+    for(int i=0;i<k;i++)
+        tmpt_rp[i] = rp[i];
+    int * result = new int[M]; //返回值
+    for(int i=0;i<M;i++) result[i]=-1;
+    int mapRes[M];  // mapRes对应vnf 映射结果
+    for(int i = 0;i<M;i++)      //初始化
+        mapRes[i] = -1;
+
+    vector<int> PodList;          // 设置可用节点list PodList为可用节点位置
+    vector<int> PodDesc;          //记录降序排列后,pod的位置
+    int PodForCurrentEvent = 0;   //从第0个位置开始扫描podlist
+    
+    for (int i = 0;i<k;i++){     //计算可用节点
+        if (tmpt_rp[i] > 0) PodList.push_back(i+100); 
+    }
+    
+    if (PodList.size() == 0) {
+        return result;
+    }else {
+
+        //对pod节点降序排列
+        while(PodList.empty()!= true ){
+            int point = 0;
+            for(int i =1;i<PodList.size();i++){
+                if(tmpt_rp[PodList[point]]<tmpt_rp[PodList[i]]){
+                    point =i;
+                }
+            }
+            PodDesc.push_back(PodList[point]);
+            PodList.erase(PodList.begin()+point);
+            
         }
     }
-    //m_dist[v][v] = 0;
     
-    
-    m_shortestPoint[v][v] = 1;			//
-    for(int i = 0; i < MAXINUM - 1; i++) //控制从除v外挑选其他关联节点的空循环
-    {
-        float min = INFINITE;
-        int u = v;
-        for (int j = 0; j < MAXINUM; j++)  // ｍｉｎ值由最小开始，找到序列最小的节点，把节点序列返回给ｕ
-        {
-            if (!m_shortestPoint[v][j] && m_dist[v][j] < min)
-            {
-                u = j;
-                min = m_dist[v][j];
-            }
-        }
-        m_shortestPoint[v][u] = 1; //更新节点的使用情况，通过置1废除已经使用的节点
-        for (int w = 0; w < MAXINUM; w++)  //  寻找u节点一步辅助节点w,更新到达w 节点的路径
-        {
-            if (!m_shortestPoint[v][w] && g_edge[u][w] < INFINITE - 1 && m_dist[v][u] + g_edge[u][w] < m_dist[v][w])
-            {
-                m_dist[v][w] = m_dist[v][u] + g_edge[u][w];
-                m_path[v][w] = u;
+    int mapVnfNumber = 1;   //已经完成的节点映射数目
+    ////cout<<mapRes[0]<<endl;
+    while(mapVnfNumber<event.vnfOrder.size()-1){   //源节点和目的节点均不需要影射
+        if (tmpt_rp[PodDesc[PodForCurrentEvent]] >= rf[event.vnfOrder[mapVnfNumber]]){  //判断是否有充分的计算资源
+            mapRes[event.vnfOrder[mapVnfNumber]+1] = PodDesc[PodForCurrentEvent]; //+1是有vnf类型是从0-1产生
+            //cout<<mapRes[event.vnfOrder[mapVnfNumber]+1]<<endl;
+            tmpt_rp[PodDesc[PodForCurrentEvent]] = tmpt_rp[PodDesc[PodForCurrentEvent]]-rf[event.vnfOrder[mapVnfNumber]] ;//更新节点容量
+            mapVnfNumber++;                                 //更新完成映射节点的个数
+        }else{
+            PodForCurrentEvent++;
+            if(PodForCurrentEvent >= PodDesc.size()) { //如果pod不能支持业务
+                return result;
             }
         }
     }
+    
+    for(int i=0;i<PodNumber;i++)
+        rp[i] = tmpt_rp[i];
+    for(int i=0; i<M+2;i++)
+        result[i]=mapRes[i];
+    //test
+    /*for(int i=0;i<M+2;i++)
+        cout<<result[i]<<" ";
+    cout<<endl;*/
+    return result;
+}
+
+
+//计算路径
+vector<int> showPath(int s,int d)  //计算从's'到'd'
+{   vector<int> current_workPath;
+    
+    if (m_dist[s][d] > INFINITE - 1) //节点不连通
+    {
+        //cout << "节点不可达" << endl;
+        current_workPath.push_back(-1);
+        
+    }
+    
+    //计算业务路径，储存到current_workPath中
+    int previousNode = s;
+    int formerNode = m_path[d][previousNode];	//返回previousNode到d的下一跳节点,返回-1表明到达宿节点
+    while (formerNode != -1)
+    {
+        current_workPath.push_back(previousNode);//存储路径
+        previousNode = formerNode;
+        formerNode = m_path[d][previousNode];
+    }
+    current_workPath.push_back(previousNode);	//添加宿节点到路径
+    return current_workPath;
+}
+
+//计算可用波长(满足波长连续性约束,满足链路资源要求）
+int calculate_wave_index(vector<int> current_workPath,int wave_need)
+{
+    int lengthOfWave=0;
+    int point = 0;
+    while(lengthOfWave< wave_need && point<WaveNumber){
+        int j=0;
+        //cout<<current_workPath.size()<<endl;
+        for( ;j<current_workPath.size()-1; )
+        {
+            if(m_resourceMap[current_workPath[j]][current_workPath[j+1]][point] != true)
+                break; //有一段为空就跳出
+            else j++;
+        }
+        if(j == current_workPath.size()-1 ) lengthOfWave++;
+        else lengthOfWave = 0;
+        point++;
+        
+    }
+    
+    if( lengthOfWave == wave_need)
+        return point-wave_need;//取可用波长块的最小序列号
+    
+    else return -1;
+    
+    /*int dd=genrandom(0,vacantWave.size());//随机命中
+     vector<int> wavefree;
+     int count=0;int as;
+     for(set<int>::iterator pos=vacantWave.begin();pos!=vacantWave.end();pos++)
+     {
+     
+     as=*pos;
+     count++;
+     if(count==dd)
+     break;
+     }
+     
+     
+     return as; */
 }
 
 //泊松分布
@@ -238,172 +458,10 @@ double arrive_time_hol(const double beta)//数据中心流量（持续时间）
     
 }
 
-//生成业务离去事件
-Event generateLeavingevent(const Event& event)
-{
-    Event event1 = event;
-    event1.m_eventType = End;
-    event1.m_time = event.m_time + event.m_holdTime;	//"业务离去事件的发生时间" = "业务到达事件发生的时间" + "业务持续时间"
-    return event1;
-}
-
-//事件处理函数
-void dealWithEvent(Event& event)  //事件处理函数流程决定了事件按照一个业务到达处理完毕再处理另一个业务的过程
-{
-    m_currentTime = event.m_time;
-    switch (event.m_eventType)
-    {
-            //业务到达事件
-        case 0:
-        {
-           vector<int> tmpt_vnfOrder;
-		   for (int i = 0;i<M;i++)
-		   { if(event.c_M[i]== 1) tmpt_vnfOrder.push_back(i);
-		   }
-		   event.vnfOrder = orderOfVNF(tmpt_vnfOrder); //计算从源节点到目的节点vnf顺序
-
-			
-            if (reg_wave == -1)
-                
-                //业务阻塞，统计阻塞率
-                m_sumOfFailedService++;
-            
-            else
-            {
-                //为业务分配资源
-                event.m_ocuppiedwave = reg_wave;
-                
-                //标记链路属性为不可用
-                for (vector<int>::iterator it = event.m_workPath.begin(); it != event.m_workPath.end() - 1; it++)
-                {
-                    m_resourceMap[*it][*(it + 1)][event.m_ocuppiedwave] = false;
-                }
-                
-                //生成该业务的离去事件
-                m_pq.insert( generateLeavingevent(event) );
-            };
-            
-            //生成下一个到达事件
-            if (m_nextServiceId < ServiceQuantity)
-            {
-                generateServiceEventPair(m_nextServiceId);
-                m_nextServiceId++;
-            }
-            
-            //删除当前事件
-            m_pq.erase(event);
-            break;
-        }
-            //业务离去事件
-        case 1:
-        {
-            //标记链路属性为可用
-            for (vector<int>::iterator it = event.m_workPath.begin(); it != event.m_workPath.end() - 1; it++)
-            {
-                m_resourceMap[*it][*(it + 1)][event.m_ocuppiedwave] = true;
-            }
-            
-            //删除当前事件
-            m_pq.erase(event);
-            break;
-        }
-    }
-}
-
-vector<int> orderOfVNF(vector<int>& tmpt_vnfOrder) //计算vnf 顺序
-{      n=tmpt_vnfOrder.size+1 ;
-        for (int i = 0;i<n;i++)
-	     {   for(int j=0;j<n;j++){
-		      if(i == j |i==0|j==0) cost[i][j]=INF;  //不使用cost中的0作为行标和列标
-		       else if(i == 1) cost[i][j] = 2;   //从s出发的的费用设置为2
-			     else if (j == 1) cost[i][j] = rf[tmpt_vnfOrder[i-1]]; //从vnf回到s的费用等同于回到d的费用等同于vnf的计算资源需求
-			      else cost[i][j] = m_min(rf[tmpt_vnfOrder[i-1]],rf[tmpt_vnfOrder[j-1]]);
-	          }
-	      } 
-		int *m_vnfPath = calculateOrder(cost);
-		vector<int> m_vnfOrder;
-		m_vnfOrder[0]=source; //加入源节点
-		for (int i=2;i<=n;i++){      //加入其余节点
-			m_vnfOrder.push_back(tmpt_vnfOrder[m_vnfPath[i]-2]);
-		}
-		m_vnfOrder.push_back(destination); //加入目的节点
-  return m_vnfOrder;
-
-}
-//计算路径，并返回可用波长编号
-int m_min(int a ,int b){
-	if (a<b) return a;
-	else return b;
-}
-int showPath(Event& event)
-{
-    int s = event.m_sourceNode;
-    int d = event.m_destNode;
-    
-    if (m_dist[s][d] > INFINITE - 1)
-    {
-        //cout << "节点不可达" << endl;
-        return -1;
-    }
-    
-    //计算业务路径，储存到m_workPath中
-    event.m_workPath.reserve(MAXINUM * MAXINUM);
-    int previousNode = s;
-    int formerNode = m_path[d][previousNode];	//返回previousNode到d的下一跳节点,返回-1表明到达宿节点
-    while (formerNode != -1)
-    {
-        event.m_workPath.push_back(previousNode);	//存储路径
-        previousNode = formerNode;
-        formerNode = m_path[d][previousNode];
-    }
-    event.m_workPath.push_back(previousNode);	//添加宿节点到路径
-    
-    
-    //计算可用波长(满足波长连续性约束，且每个业务只占用1个波长)
-    set<int> vacantWave;
-    for (int i = 0; i < WaveNumber; i++)
-        vacantWave.insert(i);
-    
-    for (vector<int>::iterator it = event.m_workPath.begin(); it != event.m_workPath.end() - 1; it++)
-    {
-        
-        for (int i = 0; i < WaveNumber; i++)
-        {
-            if (m_resourceMap[*it][*(it + 1)][i] == false)
-            {
-                vacantWave.erase(i);	//删除被占用波长
-            }
-            
-            if (vacantWave.size() == 0)
-            {
-                //cout << "无可用波长" << endl;
-                return -1;
-            }
-        }
-    }
-    return *vacantWave.begin();	//取"可用波长"的第一个波长分配给当前业务
-    
-    /*int dd=genrandom(0,vacantWave.size());//随机命中
-     vector<int> wavefree;
-     int count=0;int as;
-     for(set<int>::iterator pos=vacantWave.begin();pos!=vacantWave.end();pos++)
-     {
-     
-     as=*pos;
-     count++;
-     if(count==dd)
-     break;
-     }
-     
-     
-     return as; */
-    
-    
-}
 
 //在[ia,ib]之间产生一个整形随机数
-int genrandom(const int ia, const int ib)
-{   srand((unsigned)time(0))
-    int fr = (int)((double)rand() / ((double)RAND_MAX + 1) * (ib - ia + 1) + ia);
+int genrandom( int ia,  int ib)
+{   //srand((unsigned)time(NULL));
+    int fr = rand()%(ib-ia+1) + ia;
     return fr;
 }
