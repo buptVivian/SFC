@@ -74,12 +74,12 @@ typedef struct event
     int* c_M;           // 业务需要的vnf，其中'-1'代表不需要‘1’代表需要
     //int numberOfVnf;    //业务需要的vnf个数
     vector<int> vnfOrder;		//从第0开始记录业务的完整vnf 顺序
-    vector<int> m_podPath;         //从源节点到目的节点路由顺序
+    vector<int> m_podPath;         //从源节点到目的节点路由
     vector<int> m_wave;         //业务需要的波长
     vector<int> m_ocuppiedwave;			//业务的占有波长编号
     vector<vector<int>> m_path ;           //逻辑链路段对应的物理链路
     
-    int* x;                //节点映射包含源节点和目的节点
+    int* x;                //节点映射
     
     bool operator < (const event& event1) const
     {

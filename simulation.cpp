@@ -147,32 +147,33 @@ void dealWithEvent()  //事件处理函数流程决定了事件按照一个业�
             //先排序再映射
             for (int i = 0;i< M;i++)
                 if(event.c_M[i]== 1) tmpt_vnfOrder.push_back(i);
-            orderOfVNF(tmpt_vnfOrder,event); //计算从原节点到目的节点的顺序
+            orderOfVNF(tmpt_vnfOrder,event); //计算vnf的顺序
             
-            event.x = mapNode(event);  //map vnf到pod 节点上 event.x 长度为M+2
-            if (event.x[0]== -1)
+            event.x = mapNode(event);  //map vnf到pod节点上event.x 长度为M
+
+            if (event.x[0]!= INF)
             {m_sumOfFailedService++;//业务阻塞，统计阻塞率
                 flagForService =0;
                 }
             else{
                 //生成vnf所占pod节点路由
                 event.m_podPath.push_back(event.m_sourceNode);
-                event.m_podPath.push_back(event.x[event.vnfOrder[1]+1]);
-                for(int i = 2;i<event.vnfOrder.size()-1;i++){
-                    if(event.x[event.vnfOrder[i]+1] != event.x[event.vnfOrder[i-1]+1])
-                        event.m_podPath.push_back(event.x[event.vnfOrder[i]+1]);
+                event.m_podPath.push_back(event.x[event.vnfOrder[0]]);
+                for(int i = 1;i<event.vnfOrder.size();i++){
+                    if(event.x[event.vnfOrder[i]] != event.x[event.vnfOrder[i-1]])
+                        event.m_podPath.push_back(event.x[event.vnfOrder[i]]);
                    }
                 event.m_podPath.push_back(event.m_destNode);
                 
                 //生成pod节点路由所需的波长
-                event.m_wave.push_back(2);
+                event.m_wave.push_back(2); //从源节点出发是所需的slot
                 int flag = event.x[event.vnfOrder[1]+1];
                 for(int i = 2;i<event.vnfOrder.size()-1;i++){
                     if(event.x[event.vnfOrder[i]+1] != flag)    //只分配不同pod节点间频带
                     {   flag = event.x[event.vnfOrder[i]+1];    //更新标志位
                         event.m_wave.push_back(min(rf[event.vnfOrder[i]],rf[event.vnfOrder[i-1]]));
                     }
-                }
+                 }
                 event.m_wave.push_back(rf[event.vnfOrder[event.vnfOrder.size()-2]]);
                 
                 //分配链路资源
@@ -254,21 +255,19 @@ void dealWithEvent()  //事件处理函数流程决定了事件按照一个业�
 
 }
 
-
 void orderOfVNF(vector<int> tmpt_vnfOrder,Event & event) //计算vnf顺序
 {
     int n= int(tmpt_vnfOrder.size()+1) ; //将源节点也加入到TSP
         
     int * m_vnfPath = NULL;
-    m_vnfPath = calculateOrder(rf,n,tmpt_vnfOrder);  //m_vnfPath长度在tsp算法设置，第0位为标志位，第1位是pod节点
+    m_vnfPath = calculateOrder(rf,n,tmpt_vnfOrder);  //m_vnfPath长度在tsp算法设置，第0位是源节点，第一位开始是tmpt_vnfOrder标志位，位置相差2
     
     for(int i = 0;i <= n;i++)  //TEST
      cout<< m_vnfPath[i] << " ";
     cout<<endl;
     
     //求解顺序失败，采用随机顺序
-    event.vnfOrder.push_back(event.m_sourceNode); //加入源节点
-    if(m_vnfPath[0]==-1){
+        if(m_vnfPath[0]==-1){
         set<int>* tmp = new set<int>;
     
         cout<< "I am IN !!"<< endl; //test
@@ -281,14 +280,11 @@ void orderOfVNF(vector<int> tmpt_vnfOrder,Event & event) //计算vnf顺序
         
         for(itr=tmp->begin();itr !=tmp->end();itr++)
             event.vnfOrder.push_back(tmpt_vnfOrder[*itr]);
-        
-        event.vnfOrder.push_back(event.m_destNode);//加入目的节点
-    }
-    else                            //按照tsp 处理的结果将pod节点添加
-    {for (int i=2;i<=n;i++)      //加入其余节点
+       }
+      else                            //按照tsp 处理的结果将pod节点添加
+      {for (int i=1 ;i<n;i++)      //加入其余节点
       event.vnfOrder.push_back(tmpt_vnfOrder[m_vnfPath[i]-2]);
-        event.vnfOrder.push_back(event.m_destNode);//加入目的节点
-    }
+      }
     /*for(int i=0;i<n+1;i++)
         cout<<event.vnfOrder[i]<<" ";
     cout<<endl;*/
@@ -300,21 +296,22 @@ int * mapNode(Event& event){
     int tmpt_rp[k];   //避免请求失败产生的对rp的修改
     for(int i=0;i<k;i++)
         tmpt_rp[i] = rp[i];
+    
     int * result = new int[M]; //返回值
-    for(int i=0;i<M;i++) result[i]=-1;
     int mapRes[M];  // mapRes对应vnf 映射结果
     for(int i = 0;i<M;i++)      //初始化
         mapRes[i] = -1;
-
+    
+     result = mapRes;
     vector<int> PodList;          // 设置可用节点list PodList为可用节点位置
     vector<int> PodDesc;          //记录降序排列后,pod的位置
-    int PodForCurrentEvent = 0;   //从第0个位置开始扫描podlist
     
     for (int i = 0;i<k;i++){     //计算可用节点
-        if (tmpt_rp[i] > 0) PodList.push_back(i+100); 
+        if (tmpt_rp[i] > 0) PodList.push_back(i);
     }
     
     if (PodList.size() == 0) {
+        result[0] =INF;   //没有可用的pod,result[0]=INF
         return result;
     }else {
 
@@ -328,31 +325,32 @@ int * mapNode(Event& event){
             }
             PodDesc.push_back(PodList[point]);
             PodList.erase(PodList.begin()+point);
-            
         }
     }
     
-    int mapVnfNumber = 1;   //已经完成的节点映射数目
-    ////cout<<mapRes[0]<<endl;
-    while(mapVnfNumber<event.vnfOrder.size()-1){   //源节点和目的节点均不需要影射
+    int mapVnfNumber = 0;   //置1从vnf开始
+    int PodForCurrentEvent = 0;   //从第0个位置开始扫描podlist
+    
+    while(mapVnfNumber<event.vnfOrder.size()){   // -2 排除源节点和目的节点
         if (tmpt_rp[PodDesc[PodForCurrentEvent]] >= rf[event.vnfOrder[mapVnfNumber]]){  //判断是否有充分的计算资源
-            mapRes[event.vnfOrder[mapVnfNumber]+1] = PodDesc[PodForCurrentEvent]; //+1是有vnf类型是从0-1产生
-            //cout<<mapRes[event.vnfOrder[mapVnfNumber]+1]<<endl;
+            mapRes[event.vnfOrder[mapVnfNumber]] = PodDesc[PodForCurrentEvent]+100; //+1是有vnf类型是从0-1产生
+           
             tmpt_rp[PodDesc[PodForCurrentEvent]] = tmpt_rp[PodDesc[PodForCurrentEvent]]-rf[event.vnfOrder[mapVnfNumber]] ;//更新节点容量
             mapVnfNumber++;                                 //更新完成映射节点的个数
         }else{
             PodForCurrentEvent++;
-            if(PodForCurrentEvent >= PodDesc.size()) { //如果pod不能支持业务
+            if(PodForCurrentEvent >= PodDesc.size()) { //如果pod不能支持业务,result[0]=INF
+                result[0]=INF;
                 return result;
             }
         }
     }
     
-    for(int i=0;i<PodNumber;i++)
+    for(int i=0;i<k;i++)
         rp[i] = tmpt_rp[i];
-    for(int i=0; i<M+2;i++)
+    for(int i=0; i<M;i++)
         result[i]=mapRes[i];
-    //test
+
     /*for(int i=0;i<M+2;i++)
         cout<<result[i]<<" ";
     cout<<endl;*/
