@@ -167,14 +167,14 @@ void dealWithEvent()  //事件处理函数流程决定了事件按照一个业�
                 
                 //生成pod节点路由所需的波长
                 event.m_wave.push_back(2); //从源节点出发是所需的slot
-                int flag = event.x[event.vnfOrder[1]+1];
-                for(int i = 2;i<event.vnfOrder.size()-1;i++){
-                    if(event.x[event.vnfOrder[i]+1] != flag)    //只分配不同pod节点间频带
-                    {   flag = event.x[event.vnfOrder[i]+1];    //更新标志位
+                int flag = event.x[event.vnfOrder[0]];
+                 for(int i = 1;i<event.vnfOrder.size();i++){
+                    if(event.x[event.vnfOrder[i]] != flag)    //只分配不同pod节点间频带
+                    {   flag = event.x[event.vnfOrder[i]];    //更新标志位
                         event.m_wave.push_back(min(rf[event.vnfOrder[i]],rf[event.vnfOrder[i-1]]));
                     }
                  }
-                event.m_wave.push_back(rf[event.vnfOrder[event.vnfOrder.size()-2]]);
+                event.m_wave.push_back(rf[event.vnfOrder[event.vnfOrder.size()-1]]);
                 
                 //分配链路资源
                 bool tmpt_resourceMap[PodNumber][PodNumber][WaveNumber];
