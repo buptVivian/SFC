@@ -16,16 +16,15 @@
 
 using namespace std;
 
-
-bool tmpt_podslot[k][k][WaveNumber];  //备份
+static bool (*tmpt_podslot)[(k/2)*(k/2)][WaveNumber];  //备份
 
 void orderOfVNF(Event& event);
-int * mapNode(Event& event);
+void mapNode(Event& event);
 
 
 int calculate_wave_index(vector<int> current_workPath,int wave_need);
 
-int * MIS_slotALLo(int m,int n, int wave);
+int  MIS_slotALLo(int m,int n, int wave, vector<int> & link_port);
 int cal_MIS (int m,int p);
 
 

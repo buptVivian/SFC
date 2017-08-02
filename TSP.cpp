@@ -4,10 +4,6 @@
 //
 //  Created by vivian_bytedance on 2017/7/6.
 //  Copyright © 2017年 vivian_bytedance. All rights reserved.
-//
-
-
-//
 //  TSP.cpp
 //  test
 //
@@ -20,16 +16,16 @@
 int dfs(int u, int num, int l)//当前节点，目标节点，已经消耗的路径
 {
     if (num == n_tsp) return l + cost_tsp[u][1];//如果已经检查了n个节点，则直接返回路径消耗+第n个节点回归起点的消耗
-    int minlen = inifite, p=0;
+    int minlen = inifite, b=0;
     for(int i =1;i<=n_tsp;i++)
     {
         if(!dfs_visited[i] && minlen > cost_tsp[u][i]){
             minlen = cost_tsp[u][i];
-            p = i;
+            b = i;
         }
     }
-    dfs_visited[p] = true;//以p为下一个节点继续搜索
-    return dfs(p, num + 1, l + minlen);
+    dfs_visited[b] = true;//以p为下一个节点继续搜索
+    return dfs(b, num + 1, l + minlen);
 }
 void get_up()
 {
@@ -101,10 +97,9 @@ int get_lb(Node p)
     }
     return (ret + 1) / 2;
 }
-int * calculateOrder(int * rf, int n,vector<int>tmpt_vnfOrder)
+int calculateOrder(const int * rf, int n,int * vnf)
 {
-    int * re = new int[MAX_N] ;   //return value
-    for(int i=0;i<MAX_N;i++) re[i]=-1;
+    pq2 = priority_queue<Node>();
     
     n_tsp = n;
     //不使用第0行和第0列
@@ -113,13 +108,11 @@ int * calculateOrder(int * rf, int n,vector<int>tmpt_vnfOrder)
     {
         for(int j=0;j<n_tsp+1;j++){
             if(i == j || i==0 || j==0 ) cost_tsp[i][j]=inifite-1;  //不使用cost中的0作为行标和列标
-            else if(i == 1) cost_tsp[i][j] = rf[tmpt_vnfOrder[j-2]];   //从s出发的的费用设置为2
-            else if (j == 1) cost_tsp[i][j] = rf[tmpt_vnfOrder[i-2]]; //从vnf回到s的费用等同于回到d的费用等同于vnf的计算资源需求
-            else cost_tsp[i][j] = m_min(rf[tmpt_vnfOrder[i-2]],rf[tmpt_vnfOrder[j-2]]);
+            else if(i == 1) cost_tsp[i][j] = rf[vnf[j-2]];   //从s出发的的费用设置为2
+            else if (j == 1) cost_tsp[i][j] = rf[vnf[i-2]]; //从vnf回到s的费用等同于回到d的费用等同于vnf的计算资源需求
+            else cost_tsp[i][j] = m_min(rf[vnf[i-2]],rf[vnf[j-2]]);
         }
     }
-    
-    
     
     //贪心法确定上界
     get_up();
@@ -135,7 +128,7 @@ int * calculateOrder(int * rf, int n,vector<int>tmpt_vnfOrder)
     star.num = 1;//走过了1个点
     star.path[star.num] = 1; //路径终点为1；
     
-    for (int i = 0; i <MAX_N; i++)
+    for (int i = 1; i <=n_tsp; i++)
     {   star.visited[i] = false;
     }
     star.visited[1] = true;
@@ -160,18 +153,18 @@ int * calculateOrder(int * rf, int n,vector<int>tmpt_vnfOrder)
                     break;
                 }
             }
-            int ans = tmp.sumv + cost_tsp[p][tmp.path[1]] + cost_tsp[tmp.path[tmp.num]][p];//已消耗+回到开始消耗+走到P的消耗
+            int ans = tmp.sumv + cost_tsp[p][tmp.path[1]] + cost_tsp[tmp.path[tmp.num]][p];
+            //已消耗+回到开始消耗+走到P的消耗
             //如果当前的路径和比所有的目标函数值都小则跳出
             if (ans <= tmp.lb)
             {
                 ret = min(ans, ret);
                 tmp.num=+1;
                 tmp.path[n_tsp]=p; //更新最后走的节点
-                for(int i=0;i<= n_tsp;i++)  //采用赋值的方式可以保留局部函数的值
-                    re[i]= tmp.path[i];
-                
-                return re;
-                
+                for(int i=2;i<= n_tsp;i++)  //采用赋值的方式可以保留局部函数的值
+                 vnf[i-2]= tmp.path[i];
+                 return 1;
+            
             }
             //否则继续求其他可能的路径和，并更新上界
             else
@@ -205,17 +198,16 @@ int * calculateOrder(int * rf, int n,vector<int>tmpt_vnfOrder)
                 //cout << "test" << endl;
             }
         }
-        //cout << pq2.size() << endl;BUG:测试为0
     }
     // 求解最优顺序失败 re[1]=-1;
-    re[1]=-1;
-    return re;
+    return 0;
 }
 
 int m_min(int a ,int b){
     if (a<b) return a;
     else return b;
 }
+
 
 
 

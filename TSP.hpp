@@ -18,7 +18,7 @@
 
 using namespace std;
 
-const int MAX_N = 11;
+const int MAX_N = 8; //M+1
 const int inifite =999;
 static int n_tsp ;//节点个数
 static int cost_tsp[MAX_N][MAX_N];  //如果两次使用MAX_N就会报错
@@ -51,6 +51,6 @@ int get_lb(Node p);
 
 int m_min(int a ,int b);
 
-int * calculateOrder(int * rf, int n,vector<int>tmpt_vnfOrder);
+int calculateOrder(const int * rf, int n,int * vnf);
 
 #endif /* TSP_hpp */
