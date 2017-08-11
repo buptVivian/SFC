@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.ticker import MultipleLocator
+
+
+x = np.array([200,220,240,260,280,300,320,340,360,380])
+y1 = np.array([338,440,531,627,783,803,871,906,1087,1150])
+y2 = np.array([987,1018,1140,1327,1373,1484,1598,1703,1763,1836])
+service = 10000.0
+
+
+ax=plt.subplot(111)
+ax.semilogy(x,y1/service,'rs-',linewidth=3.0,label='TBBA')
+ax.semilogy(x,y2/service,'gd-.',linewidth=3.0,label='R-base')
+
+plt.xlabel("Traffic Loads (Erland)",fontsize = 9)
+plt.ylabel("Blocking Probility",fontsize = 9)
+
+new_ytick=np.logspace(-3,0,4)
+plt.yticks(new_ytick)
+
+xmajorLocator=MultipleLocator(20)
+xminorLocator=MultipleLocator(5)
+ax.xaxis.set_major_locator(xmajorLocator)
+ax.xaxis.set_minor_locator(xminorLocator)
+
+plt.grid(linewidth=1.0,linestyle='-.')
+ax.xaxis.grid(True, which='minor')
+
+ax.yaxis.grid(True, which='minor')
+
+plt.legend(loc='lower right')
+plt.show()
