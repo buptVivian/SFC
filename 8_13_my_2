@@ -1,50 +1,52 @@
-m_sumOfFailedService  293
-sumOfusedPods  33360
-sumOfusedSlots  357251
-the failure pod293
+m_sumOfFailedService  77
+sumOfusedPods  28950
+sumOfusedSlots  361292
+the failure pod77
 the fafilure slot0
 
-m_sumOfFailedService  594
-sumOfusedPods  32579
-sumOfusedSlots  348930
-the failure pod594
+m_sumOfFailedService  284
+sumOfusedPods  27988
+sumOfusedSlots  350007
+the failure pod284
 the fafilure slot0
 
-m_sumOfFailedService  981
-sumOfusedPods  30509
-sumOfusedSlots  327440
-the failure pod981
+m_sumOfFailedService  520
+sumOfusedPods  27348
+sumOfusedSlots  341680
+the failure pod520
 the fafilure slot0
 
-m_sumOfFailedService  1197
-sumOfusedPods  29829
-sumOfusedSlots  320643
-the failure pod1197
+m_sumOfFailedService  952
+sumOfusedPods  25997
+sumOfusedSlots  325061
+the failure pod952
 the fafilure slot0
 
-m_sumOfFailedService  1451
-sumOfusedPods  28656
-sumOfusedSlots  307914
-the failure pod1451
+m_sumOfFailedService  1344
+sumOfusedPods  24636
+sumOfusedSlots  308362
+the failure pod1344
 the fafilure slot0
 
-m_sumOfFailedService  1687
-sumOfusedPods  27666
-sumOfusedSlots  296452
-the failure pod1687
+m_sumOfFailedService  1797
+sumOfusedPods  23282
+sumOfusedSlots  291240
+the failure pod1797
 the fafilure slot0
 
-m_sumOfFailedService  2341
-sumOfusedPods  25226
-sumOfusedSlots  272304
-the failure pod2341
+m_sumOfFailedService  1886
+sumOfusedPods  22777
+sumOfusedSlots  285634
+the failure pod1886
 the fafilure slot0
 
-m_sumOfFailedService  2398
-sumOfusedPods  25031
-sumOfusedSlots  269722
-the failure pod2398
+m_sumOfFailedService  2268
+sumOfusedPods  21875
+sumOfusedSlots  274028
+the failure pod2268
 the fafilure slot0
+
+
 Lama 4:32
 rou 25
 Wave 20
