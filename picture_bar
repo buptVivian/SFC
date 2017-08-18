@@ -1,0 +1,16 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.ticker import MultipleLocator
+
+
+x = np.array([100,200,300,400,500,600,700,800])
+z1=np.array([28810,28223,27700,26915,26161,25325,24586,22878])
+z2=np.array([33625,32319,30942,29946,28395,27283,25852,24818])
+
+fig2,ax2=plt.subplots()
+plt.bar(x,z1,label='TBBA')
+plt.bar(x,z2,label='R-base')
+plt.xlabel("UsedOfPods",fontsize=9)
+plt.ylabel("times",fontsize=9)
+
+plt.show()
