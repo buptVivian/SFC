@@ -1,40 +1,82 @@
 #coding=utf-8
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import MultipleLocator
+from bar import pic2
+from slot import pic3
 
 
-x = np.array([100,200,300,400,500,600])  #8_17
-y1 = np.array([58,203,428,610,896,1155,1348,1910])
-y2 = np.array([283,611,885,1156,1525,1810,2128,2422])
-service = 10000.0
+def pic1():
+    x = np.array([100,200,300,400,500,600,700,800])
+
+    y1 = np.array([58,203,428,610,896,1155,1348,1910])
+    y2 = np.array([283,611,885,1156,1525,1810,2128,2422])
+    
+    z1=np.array([458,892,1452,1983,2225,2616,2883,3180])
+    z2=np.array([753,1300,1889,2412,2775,3110,3397,3784])
+
+    service = 10000.0
+
+    plt.figure(figsize=(3.15,2.63))
+    
+    ax1=plt.subplot(111)
+    ax1.semilogy(x,y1/service,'rs-',markersize=4.0,linewidth=3.0,label='TBBA')
+    ax1.semilogy(x,y2/service,'bd-',markersize=4.0,linewidth=3.0,label='R-base')
 
 
-fig1,ax=plt.subplots()
-ax.semilogy(x,y1/service,'rs-',linewidth=3.0,label='TBBA')
-ax.semilogy(x,y2/service,'gd-.',linewidth=3.0,label='R-base')
+    plt.xlabel("Traffic Loads (Erland)",fontsize = 9)
+    plt.ylabel("Blocking Probability",fontsize = 9)
+    
+    new_ytick=np.logspace(-3,0,4)
+    plt.yticks(new_ytick,fontsize=7)
+    plt.xticks(fontsize=7)
+    
+    xmajorLocator=MultipleLocator(100)
+    xminorLocator=MultipleLocator(20)
+    ax1.xaxis.set_major_locator(xmajorLocator)
+    ax1.xaxis.set_minor_locator(xminorLocator)
+    
+    plt.grid(linewidth=0.5,linestyle='-.')
 
-plt.xlabel("Traffic Loads (Erland)",fontsize = 9)
-plt.ylabel("Blocking Probility",fontsize = 9)
+    ax1.xaxis.grid(True, which='minor')
+    ax1.yaxis.grid(True, which='minor')
+    plt.legend(prop={'size':9},loc='lower right')
+    
 
-new_ytick=np.logspace(-3,0,4)
-plt.yticks(new_ytick)
+    plt.savefig("/Users/vivian1010/Documents/pic1.png",dpi = 100,bbox_inches='tight')
 
-xmajorLocator=MultipleLocator(100)
-xminorLocator=MultipleLocator(20)
-ax.xaxis.set_major_locator(xmajorLocator)
-ax.xaxis.set_minor_locator(xminorLocator)
+    plt.figure(figsize=(3.15,2.63))
+    ax2=plt.subplot(111)
+    ax2.semilogy(x,z1/service,'rs-',markersize=4.0,linewidth=3.0,label='TBBA')
+    ax2.semilogy(x,z2/service,'bd-',markersize=4.0,linewidth=3.0,label='R-base')
+    
+    
+    ax2.set_xlabel("Traffic Loads (Erland)",fontsize = 9)
+    ax2.set_ylabel("Blocking Probability",fontsize = 9)
+    
+    new_ytick=np.logspace(-3,0,4)
+    plt.yticks(new_ytick,fontsize=7)
+    plt.xticks(fontsize=7)
+    
+    xmajorLocator=MultipleLocator(100)
+    xminorLocator=MultipleLocator(20)
+    
+    ax2.xaxis.set_major_locator(xmajorLocator)
+    ax2.xaxis.set_minor_locator(xminorLocator)
 
-plt.grid(linewidth=1.0,linestyle='-.')
-ax.xaxis.grid(True, which='minor')
-ax.yaxis.grid(True, which='minor')
+    
+    plt.grid(linewidth=0.5,linestyle='-.')
+    
+    ax2.xaxis.grid(True, which='minor')
+    ax2.yaxis.grid(True, which='minor')
 
-plt.legend(loc='lower right')
+    plt.legend(prop={'size':9},loc='lower right')
 
+    plt.savefig("/Users/vivian1010/Documents/pic2.png",dpi = 100,bbox_inches='tight')
+    plt.show
 
-fig2.show()
+pic1()
+pic2()
+pic3()
 
-
-# p1.figure(figsize=)
-# .plot(x,y)
-# .grid(True)
