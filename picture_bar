@@ -2,15 +2,43 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import MultipleLocator
 
+def pic2():
+    x = np.array([100,200,300,400,500,600,700,800])
+    z1=np.array([28810,28223,27700,26915,26161,25325,24586,22878])
+    z2=np.array([33625,32319,30942,29946,28395,27283,25852,24818])
+    
+    z3=np.array([20529,19127,17505,16279,15343,14389,13877,12905])
+    z4=np.array([21196,20001,18735,17373,16893,15843,15148,14537])
 
-x = np.array([100,200,300,400,500,600,700,800])
-z1=np.array([28810,28223,27700,26915,26161,25325,24586,22878])
-z2=np.array([33625,32319,30942,29946,28395,27283,25852,24818])
+    plt.figure(figsize=(3.15,2.63))
+    ax3=plt.subplot(111)
+    bar_width=20
+    ax3.bar(x,z1,bar_width,color='r',label='TBBA')
+    ax3.bar(x+bar_width,z2,bar_width,color='b',label='R-base')
+    plt.xlabel("UsedOfPods",fontsize=9.0)
+    plt.ylabel("Times",fontsize=9.0)
+    
+    plt.xticks(fontsize=7)
+    plt.yticks(fontsize=7)
 
-fig2,ax2=plt.subplots()
-plt.bar(x,z1,label='TBBA')
-plt.bar(x,z2,label='R-base')
-plt.xlabel("UsedOfPods",fontsize=9)
-plt.ylabel("times",fontsize=9)
+    plt.legend(prop={'size':8})
+    loc='upper right'
 
-plt.show()
+    plt.savefig("/Users/vivian1010/Documents/pic3.png",dpi=100,bbox_inches='tight')
+    
+    plt.figure(figsize=(3.15,2.63))
+    ax4=plt.subplot(111)
+    bar_width=20
+    ax4.bar(x,z3,bar_width,color='r',label='TBBA')
+    ax4.bar(x+bar_width,z4,bar_width,color='b',label='R-base')
+    plt.xlabel("UsedOfPods",fontsize=9.0)
+    plt.ylabel("Times",fontsize=9.0)
+    
+    plt.xticks(fontsize=7)
+    plt.yticks(fontsize=7)
+    
+    plt.legend(prop={'size':8})
+    loc='upper right'
+    
+    plt.savefig("/Users/vivian1010/Documents/pic4.png",dpi=100,bbox_inches='tight')
+
